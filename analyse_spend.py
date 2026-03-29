@@ -23,22 +23,21 @@ def csv_tot(filepath):#turned into func
     return monthly_tot #print sum
 
 print(csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv']))
-monthly_cost = 66.50
+tot_dict = csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv'])
 
 def comparison(tot):
+    monthly_cost = 66.50
     print(f"Monthly Bus & Tram Pass cost: £{monthly_cost:.2f}")
+    for date,charge in tot.items():
 
-    nov_tot = float(csv_tot('November-journey.csv'))  # sorted tot value
-    print(nov_tot)
-    diff = monthly_cost - nov_tot
+        diff = monthly_cost - charge
+        print(f"For {date}: ")
+        if charge < monthly_cost:  # compare with monthly and give recommendation
+            print(f"Recommendation: PAYG is cheaper by £{diff:.2f}")
+        elif charge > monthly_cost:
+            print(f"Recommendation: Bus & Tram Pass is cheaper by £{abs(diff):.2f}")
+        else:
+            print("Recommendation: Both options cost the same.")
 
-    if nov_tot < monthly_cost:  # compare with monthly and give recommendation
-        print(f"Recommendation: PAYG is cheaper by £{diff:.2f}")
-    elif nov_tot > monthly_cost:
-        print(f"Recommendation: Bus & Tram Pass is cheaper by £{abs(diff):.2f}")
-    else:
-        print("Recommendation: Both options cost the same.")
-
-
-
+comparison(tot_dict)
 
