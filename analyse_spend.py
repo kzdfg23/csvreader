@@ -22,7 +22,7 @@ def csv_tot(filepath):#turned into func
 
     return monthly_tot #print sum
 
-print(csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv']))
+#print(csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv']))
 tot_dict = csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv'])
 
 def comparison(tot):
