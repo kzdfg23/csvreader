@@ -22,8 +22,9 @@ def csv_tot(filepath):#turned into func
 
     return monthly_tot #print sum
 
-#print(csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv']))
+
 tot_dict = csv_tot(['November-journey.csv','December-journey.csv','January-journey.csv'])
+print(tot_dict)
 
 def comparison(tot):
     monthly_cost = 66.50
@@ -32,6 +33,7 @@ def comparison(tot):
 
         diff = monthly_cost - charge
         print(f"For {date}: ")
+        print(f"You spent: £{charge:.2f}")
         if charge < monthly_cost:  # compare with monthly and give recommendation
             print(f"Recommendation: PAYG is cheaper by £{diff:.2f}")
         elif charge > monthly_cost:
@@ -41,3 +43,29 @@ def comparison(tot):
 
 comparison(tot_dict)
 
+def ave_monthly(data):
+    total = 0
+    for date, charge in data.items():
+        total += charge
+    return f"Your average monthly spend is £{total/len(data):.2f}"
+print(ave_monthly(tot_dict))
+
+def highest_spend_month(data):
+    month, spend = next(iter(data.items()))
+    for date, charge in data.items():
+        if charge > spend:
+            spend = charge
+            month = date
+
+    return f"{month} was your highest month where you spent £{spend:.2f}"
+print(highest_spend_month(tot_dict))
+
+def lowest_spend_month(data):
+    month, spend = next(iter(data.items()))
+    for date, charge in data.items():
+        if charge < spend:
+            spend = charge
+            month = date
+
+    return f"{month} was your lowest month where you spent £{spend:.2f}"
+print(lowest_spend_month(tot_dict))
