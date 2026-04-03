@@ -128,14 +128,18 @@ def graph_data(data):
     return months, spends
 print(graph_data(tot_dict))
 
-def cumulative_total(data):
+def cumulative_data(data):
     if data == {}:
         return 0
+    months = []
+    spends = []
     total = 0
-    for charge in data.values():
-        total += charge
-    return total
-print(cumulative_total(tot_dict))
+    for month,spend in sorted(data.items()):
+        total += spend
+        months.append(month)
+        spends.append(total)
+    return months,spends
+print(cumulative_data(tot_dict))
 
 def summary_report(data):
     summary = {"average": ave_monthly(data), "highest_month": highest_spend_month(data)[0], "lowest_month": lowest_spend_month(data)[0],
@@ -147,8 +151,11 @@ def plot_spending(data):
     months, spends = graph_data(data)
 
     labels = [month.strftime("%B %Y") for month in months]
+    cumu_spends = cumulative_data(data)[1]
 
-    plt.plot(labels,spends,marker='o')
+    plt.plot(labels,spends,marker='o',label='Monthly Spend')
+    plt.plot(labels,cumu_spends,marker='o',label='Cumulative Spend')
+    plt.legend()
     plt.title("Monthly Transport Spending")
     plt.xlabel("Month")
     plt.ylabel("Spend (£)")
