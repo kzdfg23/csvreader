@@ -1,5 +1,6 @@
 import csv  # import csv module
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 
 def csv_tot(filepath):  # turned into func
@@ -101,10 +102,10 @@ def trend_detect(data):
     for next_month, next_spend in it:
         trend = {"from": month.strftime("%B %Y"), "to": next_month.strftime("%B %Y")}
         if next_spend > spend:
-            trend["change"] = next_spend - spend
+            trend["change"] = round((next_spend - spend) * 100/next_spend, 0)
             trend["direction"] = "increase"
         elif spend > next_spend:
-            trend["change"] = spend - next_spend
+            trend["change"] = round((spend - next_spend) * 100/spend, 0)
             trend["direction"] = "decrease"
         else:
             trend["change"] = 0
@@ -126,3 +127,32 @@ def graph_data(data):
         spends.append(spend)
     return months, spends
 print(graph_data(tot_dict))
+
+def cumulative_total(data):
+    if data == {}:
+        return 0
+    total = 0
+    for charge in data.values():
+        total += charge
+    return total
+print(cumulative_total(tot_dict))
+
+def summary_report(data):
+    summary = {"average": ave_monthly(data), "highest_month": highest_spend_month(data)[0], "lowest_month": lowest_spend_month(data)[0],
+               "trends": trend_detect(data)}
+    return summary
+print(summary_report(tot_dict))
+
+def plot_spending(data):
+    months, spends = graph_data(data)
+
+    labels = [month.strftime("%B %Y") for month in months]
+
+    plt.plot(labels,spends,marker='o')
+    plt.title("Monthly Transport Spending")
+    plt.xlabel("Month")
+    plt.ylabel("Spend (£)")
+    plt.grid(True)
+    plt.savefig("spending_chart.png")
+    plt.show()
+plot_spending(tot_dict)
